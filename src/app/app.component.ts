@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
         };
         const error = (err: any) => {
             this.textToPrint = this.textToPrint + '\n' +
-                '(!) Error ' + err.code + ': ' + err.message + '.\n';
-            console.warn('ERROR -->' + err);
+                '(!) Error ' + err.code + ': ' + err.message + '.\n\n';
+            console.warn('ERROR ' + err.code + ' --> ' + err.message);
         };
         const date = new Date().toISOString();
         navigator.geolocation.watchPosition(success, error, options);
@@ -105,6 +105,49 @@ export class AppComponent implements OnInit {
             'userAgent: ' + navigator.userAgent + '\n' +
             'vendor: ' + navigator.vendor + '\n' +
             'platform: ' + navigator.platform + '\n';
+    }
+
+    getCoordinates3(): void {
+        let startTime = new Date();
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 60000,
+            maximumAge: 0
+        };
+
+        const success = (pos: any) => {
+            var crd = pos.coords;
+            let endTime = new Date();
+            this.textToPrint =
+                '·· watchPosition (continuo) ··' + '\n\n' +
+                'Latitud: ' + crd.latitude + '\n' +
+                'Longitud: ' + crd.longitude + '\n' +
+                'Precisión : ' + crd.accuracy + '\n' +
+                'Altitud: ±' + crd.altitude + ' m' + '\n' +
+                'Precisión de la altitud: ' + crd.altitudeAccuracy + ' m' + '\n' +
+                'Orientación: ' + crd.heading + 'º' + '\n' +
+                'Velocidad: ' + crd.speed + ' m/s' + '\n' +
+                'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n' +
+                'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
+                'Fecha del clickeo: ' + date + '\n' +
+                'Tiempo entre dos peticiones: ' + (endTime.getTime() - startTime.getTime()) + ' ms' + '\n\n';
+            startTime = new Date();
+        };
+        const error = (err: any) => {
+            this.textToPrint = this.textToPrint + '\n' +
+                '(!) Error ' + err.code + ': ' + err.message + '.\n\n';
+            console.warn('ERROR ' + err.code + ' --> ' + err.message);
+            if (err.code === 3) {
+                this.textToPrint += 'Reintentando...' + '\n';
+                this.getCoordinates3();
+            }
+            if (err.code === 1) {
+                this.textToPrint += 'Revisa los permisos de ubicación de tu dispositivo y vuelve a intentarlo.' + '\n';
+            }
+
+        };
+        const date = new Date().toISOString();
+        navigator.geolocation.watchPosition(success, error, options);
     }
 
     cleanLog(): void {
