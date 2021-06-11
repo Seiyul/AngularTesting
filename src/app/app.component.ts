@@ -10,6 +10,9 @@ export class AppComponent implements OnInit {
     title = 'Testing';
     textToPrint = '';
 
+    averageTime: number[] = [];
+    averageAccuracy: number[] = [];
+
     ngOnInit(): void {
         // Notification.requestPermission();
     }
@@ -118,8 +121,10 @@ export class AppComponent implements OnInit {
         const success = (pos: any) => {
             var crd = pos.coords;
             let endTime = new Date();
+            const accuracy = crd.accuracy;
+            const time = (endTime.getTime() - startTime.getTime());
             this.textToPrint =
-                '·· watchPosition (continuo) ··' + '\n\n' +
+                '· watchPosition · \n· ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
                 'Latitud: ' + crd.latitude + '\n' +
                 'Longitud: ' + crd.longitude + '\n' +
                 'Precisión : ' + crd.accuracy + '\n' +
@@ -130,8 +135,12 @@ export class AppComponent implements OnInit {
                 'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n' +
                 'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
                 'Fecha del clickeo: ' + date + '\n' +
-                'Tiempo entre dos peticiones: ' + (endTime.getTime() - startTime.getTime()) + ' ms' + '\n\n';
+                'Tiempo entre dos peticiones: ' + time + ' ms' + '\n\n';
             startTime = new Date();
+
+            this.averageAccuracy.push(parseFloat(accuracy));
+            this.averageTime.push(time);
+
         };
         const error = (err: any) => {
             this.textToPrint = this.textToPrint + '\n' +
@@ -152,5 +161,32 @@ export class AppComponent implements OnInit {
 
     cleanLog(): void {
         this.textToPrint = '';
+    }
+
+    copyAverage(): void {
+        let accuracy = 0;
+        let time = 0;
+        for (let i = 0; i < this.averageAccuracy.length; i++) {
+            accuracy += this.averageAccuracy[i];
+        }
+        accuracy = accuracy / this.averageAccuracy.length;
+
+        for (let i = 0; i < this.averageTime.length; i++) {
+            time += this.averageTime[i];
+        }
+        time = time / this.averageTime.length;
+
+        const value = 'Registros de precisión: [' + this.averageAccuracy.toString() + '] \n' +
+            'Cantidad de registros: ' + this.averageAccuracy.length + '\n' +
+            'Media de precisión: ' + accuracy + '\n\n' +
+            'Registros de tiempos: [' + this.averageTime.toString() + '] \n' +
+            'Cantidad de registros: ' + this.averageTime.length + '\n' +
+            'Media de tiempos: ' + time + '\n';
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = value;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
     }
 }
