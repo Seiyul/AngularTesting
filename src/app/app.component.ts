@@ -13,6 +13,8 @@ export class AppComponent implements OnInit {
     averageTime: number[] = [];
     averageAccuracy: number[] = [];
 
+    watchPosition: any;
+
     ngOnInit(): void {
         // Notification.requestPermission();
     }
@@ -124,12 +126,12 @@ export class AppComponent implements OnInit {
             const accuracy = crd.accuracy;
             const time = (endTime.getTime() - startTime.getTime());
             this.textToPrint =
-                '· watchPosition · \n· ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
+                '· watchPosition · \n· Refresco Nº ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
                 'Latitud: ' + crd.latitude + '\n' +
                 'Longitud: ' + crd.longitude + '\n' +
                 'Precisión : ' + crd.accuracy + '\n' +
                 'Altitud: ±' + crd.altitude + ' m' + '\n' +
-                'Precisión de la altitud: ' + crd.altitudeAccuracy + ' m' + '\n' +
+                // 'Precisión de la altitud: ' + crd.altitudeAccuracy + ' m' + '\n' +
                 'Orientación: ' + crd.heading + 'º' + '\n' +
                 'Velocidad: ' + crd.speed + ' m/s' + '\n' +
                 'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n' +
@@ -156,11 +158,18 @@ export class AppComponent implements OnInit {
 
         };
         const date = new Date().toISOString();
-        navigator.geolocation.watchPosition(success, error, options);
+        this.watchPosition = navigator.geolocation.watchPosition(success, error, options);
     }
 
     cleanLog(): void {
         this.textToPrint = '';
+    }
+
+    stopWatch(): void {
+        navigator.geolocation.clearWatch(this.watchPosition);
+        this.averageAccuracy = [];
+        this.averageTime = [];
+        this.textToPrint = 'Se ha detenido el método 3 correctamente';
     }
 
     copyAverage(): void {
@@ -176,10 +185,9 @@ export class AppComponent implements OnInit {
         }
         time = time / this.averageTime.length;
 
-        const value = 'Registros de precisión: [' + this.averageAccuracy.toString() + '] \n' +
+        const value =
             'Cantidad de registros: ' + this.averageAccuracy.length + '\n' +
             'Media de precisión: ' + accuracy + '\n\n' +
-            'Registros de tiempos: [' + this.averageTime.toString() + '] \n' +
             'Cantidad de registros: ' + this.averageTime.length + '\n' +
             'Media de tiempos: ' + time + '\n';
         var dummy = document.createElement("textarea");
