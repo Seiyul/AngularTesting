@@ -1,5 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-root',
@@ -20,10 +22,41 @@ export class AppComponent implements OnInit {
 
     isCalculateDistance = false;
 
-    sampleCoordinates = [['Acueducto de Segovia', 40.94791, -4.11788], ['Catedral de León', 42.59918, -5.56678], ['Kilómetro cero', 40.41664, -3.70381]];
+    showForm = false;
+
+    customPlace = new FormGroup({
+        name: new FormControl(''),
+        latitude: new FormControl('', [Validators.max(90), Validators.min(-90), Validators.required]),
+        longitude: new FormControl('', [Validators.max(180), Validators.min(-180), Validators.required])
+    })
+
+    sampleCoordinates = [
+        ['Acueducto de Segovia', 40.94791, -4.11788],
+        ['Catedral de León', 42.59918, -5.56678],
+        ['Kilómetro cero', 40.41664, -3.70381],
+        ['Catedral de Santiago', 42.88054, -8.54527],
+        ['Palacio de la Magdalena', 43.46917, -3.76636],
+        ['Museo Guggenheim Bilbao', 43.26876, -2.93388],
+        ['Sagrada Familia', 41.40344, 2.17409],
+        ['Ciudad de las Artes y las Ciencias', 39.45556, -0.35184],
+        ['Catedral de Málaga', 36.72012, -4.41950],
+        ['Plaza Mayor de Salamanca', 40.93503, -5.66407],
+        ['Teatro Romano de Mérida', 38.91534, -6.33864],
+        ['La Giralda', 37.38620, -5.99254],
+        ['Mezquita-Catedral de Córdoba', 37.87899, -4.77947]
+    ];
+
+    constructor(
+        private _snackbar: MatSnackBar
+    ) {
+
+    }
 
     ngOnInit(): void {
         // Notification.requestPermission();
+        this._snackbar.open('No se comparte la información con ningún servidor', 'Cerrar', {
+            duration: 3000
+        });
     }
 
     getBrowserInfo(): void {
@@ -179,5 +212,14 @@ export class AppComponent implements OnInit {
 
     toRadians(value: number): number {
         return value * Math.PI / 180;
+    }
+
+    addValue(): void {
+        const name = !this.customPlace.get('name')?.value ? 'Custom' : this.customPlace.get('name')?.value;
+        this.selectValue = [name, this.customPlace.get('latitude')?.value, this.customPlace.get('longitude')?.value];
+        this.isCalculateDistance = true;
+        this.showForm = false;
+        this.showSelect = true;
+        this.getCoordinates(true);
     }
 }

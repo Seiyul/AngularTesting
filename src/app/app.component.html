@@ -391,11 +391,12 @@
     </div>
 
     <!-- Terminal -->
-    <div class="terminal" *ngIf="showSelect === false" [ngStyle]="{'font-style': textToPrint === '' ? 'italic' : ''}">
+    <div class="terminal" *ngIf="showSelect === false && showForm === false;"
+        [ngStyle]="{'font-style': textToPrint === '' ? 'italic' : ''}">
         <pre>{{ textToPrint === '' ? 'Pulsa un botón' : textToPrint }}</pre>
     </div>
 
-    <div *ngIf="showSelect === true">
+    <div *ngIf="showSelect === true && showForm === false;">
         <mat-form-field appearance="fill">
             <mat-label>Selecciona una ubicación... </mat-label>
             <mat-select [(ngModel)]="selectValue"
@@ -405,10 +406,41 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-mini-fab color="primary" style="bottom: 8px; margin-left: 10px;" (click)="getCoordinates(true);">
+        <button mat-mini-fab color="primary" style="bottom: 8px; margin-left: 10px;" (click)="getCoordinates(true);"
+            matTooltip="Buscar">
             <mat-icon>search</mat-icon>
         </button>
+        <button mat-mini-fab color="accent" style="bottom: 8px; margin-left: 10px;"
+            (click)="showSelect = false; showForm = true;">
+            <mat-icon>add</mat-icon>
+        </button>
     </div>
+
+    <form [formGroup]="customPlace" *ngIf="showForm === true">
+        <mat-form-field appearance="outline" style="margin: 10px;">
+            <mat-label>Nombre de la ubicación</mat-label>
+            <input matInput formControlName="name">
+            <mat-hint>Opcional</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="margin: 10px;">
+            <mat-label>Latitud</mat-label>
+            <input matInput formControlName="latitude">
+            <mat-hint>Obligatorio</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="margin: 10px;">
+            <mat-label>Longitud</mat-label>
+            <input matInput formControlName="longitude">
+            <mat-hint>Obligatorio</mat-hint>
+        </mat-form-field>
+
+        <button mat-mini-fab color="accent" style="bottom: 8px; margin-left: 10px;" (click)="addValue();"
+            [disabled]="customPlace.invalid">
+            <mat-icon>save</mat-icon>
+        </button>
+    </form>
+
 
     <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677"
         viewBox="0 0 2611.084 485.677">
