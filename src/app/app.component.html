@@ -344,83 +344,70 @@
     <input type="hidden" #selection>
 
     <div class="card-container">
-        <div class="card card-small" style="background-color: #444444;"
-            (click)="selection.value = 'component'; getCoordinates();" tabindex="0">
-            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-            </svg>
-            <span style="color: white">Método 1 - Deprecated</span>
-        </div>
-
-        <div class="card card-small" style="background-color: #444444;"
-            (click)="selection.value = 'component'; getCoordinates2();" tabindex="0">
-            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-            </svg>
-            <span style="color: white">Método 2 - Deprecated</span>
-        </div>
 
         <div class="card card-small" style="background-color: #80ff9f;"
-            (click)="selection.value = 'component'; getCoordinates3();" tabindex="0">
+            (click)="showSelect = false; this.isCalculateDistance = false;  getCoordinates(true);" tabindex="0">
             <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
-            <span>Coordenadas (método 3)</span>
+            <span>Coordenadas</span>
         </div>
 
         <div class="card card-small" style="background-color: rgb(107, 176, 255);" *ngIf="averageAccuracy.length > 0"
-            (click)="selection.value = 'component'; copyAverage();" tabindex="0">
+            (click)="showSelect = false; copyAverage(); this.isCalculateDistance = false;" tabindex="0">
             <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
-            <span style="color: white">Copiar medias (método 3)</span>
+            <span style="color: white">Copiar medias actuales</span>
         </div>
 
         <div class="card card-small" style="background-color: rgb(255, 125, 125);" *ngIf="averageAccuracy.length > 0"
-            (click)="selection.value = 'component'; stopWatch();" tabindex="0">
+            (click)="showSelect = false; this.isCalculateDistance = false; stopWatch();" tabindex="0">
             <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
-            <span style="color: white;">Detener método 3 (borra medias)</span>
+            <span style="color: white;">Detener coordenadas</span>
         </div>
-
-        <!-- <div class="card card-small" style="background-color: #f5f17f;"
-            (click)="selection.value = 'material'; getFiveCoordinates();" tabindex="0">
-            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-            </svg>
-            <span>Prueba continua (x10)</span>
-        </div> -->
 
 
         <div class="card card-small" style="background-color: #ffa2f0;"
-            (click)="selection.value = 'material'; getBrowserInfo();" tabindex="0">
+            (click)="showSelect = false; this.isCalculateDistance = false; getBrowserInfo();" tabindex="0">
             <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
             <span>Browser info</span>
         </div>
 
-        <div class="card card-small" style="background-color: #daff83;" (click)="copyToClipboard();" tabindex="0">
+
+        <div class="card card-small" style="background-color: #e0fa6b;"
+            (click)="showSelect = true; this.isCalculateDistance = false;" tabindex="0">
             <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
-            <span>Copiar consola actual</span>
+            <span>Mostrar distancia a...</span>
         </div>
 
-        <div class="card card-small" (click)="selection.value = 'material'; cleanLog();" tabindex="0">
-            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-            </svg>
-            <span>Limpiar consola</span>
-        </div>
+
     </div>
 
     <!-- Terminal -->
-    <div class="terminal" [ngSwitch]="selection.value">
-        <pre *ngSwitchDefault style="font-style: italic; text-align: center;">Pulsa un botón</pre>
-        <pre *ngSwitchCase="'component'">{{ textToPrint }}</pre>
-        <pre *ngSwitchCase="'material'">{{ textToPrint }}</pre>
+    <div class="terminal" *ngIf="showSelect === false" [ngStyle]="{'font-style': textToPrint === '' ? 'italic' : ''}">
+        <pre>{{ textToPrint === '' ? 'Pulsa un botón' : textToPrint }}</pre>
+    </div>
+
+    <div *ngIf="showSelect === true">
+        <mat-form-field appearance="fill">
+            <mat-label>Selecciona una ubicación... </mat-label>
+            <mat-select [(ngModel)]="selectValue"
+                (selectionChange)="getCoordinates(true); this.isCalculateDistance = true;">
+                <mat-option *ngFor="let option of sampleCoordinates" [value]="option">
+                    {{ option[0] }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-mini-fab color="primary" style="bottom: 8px; margin-left: 10px;">
+            <mat-icon>search</mat-icon>
+        </button>
     </div>
 
     <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677"
@@ -433,12 +420,5 @@
 
 </div>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <router-outlet></router-outlet>

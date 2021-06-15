@@ -15,85 +15,24 @@ export class AppComponent implements OnInit {
 
     watchPosition: any;
 
+    showSelect = false;
+    selectValue: any;
+
+    isCalculateDistance = false;
+
+    sampleCoordinates = [['Acueducto de Segovia', 40.94791, -4.11788], ['Catedral de León', 42.59918, -5.56678], ['Kilómetro cero', 40.41664, -3.70381]];
+
     ngOnInit(): void {
         // Notification.requestPermission();
     }
 
-    getCoordinates(): void {
-        var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        };
+    getBrowserInfo(): void {
+        this.textToPrint = '··· Browser info ···' + '\n';
 
-        const success = (pos: any) => {
-            var crd = pos.coords;
-
-
-            this.textToPrint = this.textToPrint +
-                '·· getCurrentPosition ··' + '\n\n' +
-                'latitude: ' + crd.latitude + '\n' +
-                'longitude: ' + crd.longitude + '\n' +
-                'accuracy: ' + crd.accuracy + '\n' +
-                'altitude: ' + crd.altitude + '\n' +
-                'altitudeAccuracy: ' + crd.altitudeAccuracy + '\n' +
-                'heading: ' + crd.heading + '\n' +
-                'speed: ' + crd.speed + '\n' +
-                'timestamp: ' + new Date(pos.timestamp).toISOString() + '\n' +
-                'clickDate: ' + date + '\n\n';
-        };
-
-        const error = (err: any) => {
-            this.textToPrint = this.textToPrint + '\n' +
-                '(!) Error ' + err.code + ': ' + err.message + '.\n';
-            console.warn('ERROR -->' + err);
-        };
-        const date = new Date().toISOString();
-        navigator.geolocation.getCurrentPosition(success, error, options);
-    }
-
-    // Utilización del watchPosition en lugar del getCurrentPosition
-    getCoordinates2(): void {
-        var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        };
-
-        const success = (pos: any) => {
-            var crd = pos.coords;
-            this.textToPrint = this.textToPrint +
-                '·· watchPosition ··' + '\n\n' +
-                'latitude: ' + crd.latitude + '\n' +
-                'longitude: ' + crd.longitude + '\n' +
-                'accuracy: ' + crd.accuracy + '\n' +
-                'altitude: ' + crd.altitude + '\n' +
-                'altitudeAccuracy: ' + crd.altitudeAccuracy + '\n' +
-                'heading: ' + crd.heading + '\n' +
-                'speed: ' + crd.speed + '\n' +
-                'timestamp: ' + new Date(pos.timestamp).toISOString() + '\n' +
-                'clickDate: ' + date + '\n\n';
-
-        };
-        const error = (err: any) => {
-            this.textToPrint = this.textToPrint + '\n' +
-                '(!) Error ' + err.code + ': ' + err.message + '.\n\n';
-            console.warn('ERROR ' + err.code + ' --> ' + err.message);
-        };
-        const date = new Date().toISOString();
-        navigator.geolocation.watchPosition(success, error, options);
-    }
-
-    getFiveCoordinates(): void {
-        this.textToPrint = '··· Prueba continua (10 repeticiones - 5 segundos) ···' + '\n\n';
-        for (let i = 0; i < 10; i++) {
-            setTimeout(() => {
-                this.getCoordinates();
-            }, 5000 * i);
-        }
-    }
-
-    copyToClipboard(): void {
+        this.textToPrint = this.textToPrint + '\n' +
+            'userAgent: ' + navigator.userAgent + '\n' +
+            'vendor: ' + navigator.vendor + '\n' +
+            'platform: ' + navigator.platform + '\n';
         var dummy = document.createElement("textarea");
         document.body.appendChild(dummy);
         dummy.value = this.textToPrint;
@@ -102,17 +41,10 @@ export class AppComponent implements OnInit {
         document.body.removeChild(dummy);
     }
 
-    getBrowserInfo(): void {
-        this.textToPrint = '··· Browser info ···' + '\n';
-        console.log('navigator -->', navigator);
-
-        this.textToPrint = this.textToPrint + '\n' +
-            'userAgent: ' + navigator.userAgent + '\n' +
-            'vendor: ' + navigator.vendor + '\n' +
-            'platform: ' + navigator.platform + '\n';
-    }
-
-    getCoordinates3(): void {
+    getCoordinates(firstTime?: boolean): void {
+        if (firstTime) {
+            this.stopWatch(true);
+        }
         let startTime = new Date();
         var options = {
             enableHighAccuracy: true,
@@ -125,24 +57,42 @@ export class AppComponent implements OnInit {
             let endTime = new Date();
             const accuracy = crd.accuracy;
             const time = (endTime.getTime() - startTime.getTime());
-            this.textToPrint =
-                '· watchPosition · \n· Refresco Nº ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
-                'Latitud: ' + crd.latitude + '\n' +
-                'Longitud: ' + crd.longitude + '\n' +
-                'Precisión : ' + crd.accuracy + '\n' +
-                'Altitud: ±' + crd.altitude + ' m' + '\n' +
-                // 'Precisión de la altitud: ' + crd.altitudeAccuracy + ' m' + '\n' +
-                'Orientación: ' + crd.heading + 'º' + '\n' +
-                'Velocidad: ' + crd.speed + ' m/s' + '\n' +
-                'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n' +
-                'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
-                'Fecha del clickeo: ' + date + '\n' +
-                'Tiempo entre dos peticiones: ' + time + ' ms' + '\n\n';
-            startTime = new Date();
-
-            this.averageAccuracy.push(parseFloat(accuracy));
-            this.averageTime.push(time);
-
+            if (this.isCalculateDistance) {
+                this.showSelect = false;
+                this.textToPrint =
+                    '· watchPosition · \n· Refresco Nº ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
+                    'Ubicación seleccionada: ' + this.selectValue[0] + '\n' +
+                    'Latitud de la ubicación: ' + this.selectValue[1] + '\n' +
+                    'Longitud de la ubicación: ' + this.selectValue[2] + '\n\n' +
+                    'Latitud actual: ' + crd.latitude + '\n' +
+                    'Longitud actual: ' + crd.longitude + '\n' +
+                    'Precisión: ±' + crd.accuracy + ' m\n\n' +
+                    '(!) Distancia a la ubicación: ' + this.calculateDistance(crd.latitude, crd.longitude) + ' km(s)' + '\n\n' +
+                    'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n\n' +
+                    'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
+                    'Fecha del clickeo: ' + date + '\n' +
+                    'Tiempo entre dos peticiones: ' + time + ' ms' + '\n\n';
+                startTime = new Date();
+                this.averageAccuracy.push(parseFloat(accuracy));
+                this.averageTime.push(time);
+            }
+            else {
+                this.textToPrint =
+                    '· watchPosition · \n· Refresco Nº ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
+                    'Latitud: ' + crd.latitude + '\n' +
+                    'Longitud: ' + crd.longitude + '\n' +
+                    'Precisión : ' + crd.accuracy + '\n' +
+                    'Altitud: ' + crd.altitude + ' m' + '\n' +
+                    'Orientación: ' + crd.heading + 'º' + '\n' +
+                    'Velocidad: ' + crd.speed + ' m/s' + '\n' +
+                    'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n' +
+                    'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
+                    'Fecha del clickeo: ' + date + '\n' +
+                    'Tiempo entre dos peticiones: ' + time + ' ms' + '\n\n';
+                startTime = new Date();
+                this.averageAccuracy.push(parseFloat(accuracy));
+                this.averageTime.push(time);
+            }
         };
         const error = (err: any) => {
             this.textToPrint = this.textToPrint + '\n' +
@@ -150,7 +100,7 @@ export class AppComponent implements OnInit {
             console.warn('ERROR ' + err.code + ' --> ' + err.message);
             if (err.code === 3) {
                 this.textToPrint += 'Reintentando...' + '\n';
-                this.getCoordinates3();
+                this.getCoordinates();
             }
             if (err.code === 1) {
                 this.textToPrint += 'Revisa los permisos de ubicación de tu dispositivo y vuelve a intentarlo.' + '\n';
@@ -165,11 +115,13 @@ export class AppComponent implements OnInit {
         this.textToPrint = '';
     }
 
-    stopWatch(): void {
+    stopWatch(hideMessage?: boolean): void {
         navigator.geolocation.clearWatch(this.watchPosition);
         this.averageAccuracy = [];
         this.averageTime = [];
-        this.textToPrint = 'Se ha detenido el método 3 correctamente';
+        if (!hideMessage) {
+            this.textToPrint = 'Se ha detenido el método 3 correctamente';
+        }
     }
 
     copyAverage(): void {
@@ -196,5 +148,36 @@ export class AppComponent implements OnInit {
         dummy.select();
         document.execCommand("copy");
         document.body.removeChild(dummy);
+    }
+
+    calculateDistance(latitude: number, longitude: number): number {
+        const latitudeChosen = this.selectValue[1];
+        console.log('latitude: ' + latitude);
+        console.log('latitudeChosen: ' + latitudeChosen);
+
+        const longitudeChosen = this.selectValue[2];
+        console.log('longitude: ' + longitude);
+        console.log('longitudeChosen: ' + longitudeChosen);
+
+        const earthRadius = 6371;
+
+        const x1 = latitude - latitudeChosen;
+        const distanceLatitude = this.toRadians(x1);
+
+        const x2 = longitude - longitudeChosen;
+        const distanceLongitude = this.toRadians(x2);
+
+        const a = Math.sin(distanceLatitude / 2) * Math.sin(distanceLatitude / 2) +
+            Math.cos(this.toRadians(latitude)) * Math.cos(this.toRadians(latitudeChosen)) *
+            Math.pow(Math.sin(this.toRadians(distanceLongitude)), 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = earthRadius * c;
+
+        return d;
+    }
+
+    toRadians(value: number): number {
+        return value * Math.PI / 180;
     }
 }
