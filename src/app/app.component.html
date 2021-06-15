@@ -406,12 +406,12 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-mini-fab color="primary" style="bottom: 8px; margin-left: 10px;" (click)="getCoordinates(true);"
-            matTooltip="Buscar">
+        <button mat-mini-fab color="primary" style="bottom: 8px; margin-left: 10px;"
+            (click)="getCoordinates(true); this.isCalculateDistance = true;" matTooltip="Buscar">
             <mat-icon>search</mat-icon>
         </button>
         <button mat-mini-fab color="accent" style="bottom: 8px; margin-left: 10px;"
-            (click)="showSelect = false; showForm = true;">
+            (click)="showSelect = false; showForm = true;" matTooltip="Añadir">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -436,7 +436,7 @@
         </mat-form-field>
 
         <button mat-mini-fab color="accent" style="bottom: 8px; margin-left: 10px;" (click)="addValue();"
-            [disabled]="customPlace.invalid">
+            [disabled]="customPlace.invalid" matTooltip="Guardar">
             <mat-icon>save</mat-icon>
         </button>
     </form>

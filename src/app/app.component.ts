@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -33,30 +34,42 @@ export class AppComponent implements OnInit {
     sampleCoordinates = [
         ['Acueducto de Segovia', 40.94791, -4.11788],
         ['Catedral de León', 42.59918, -5.56678],
-        ['Kilómetro cero', 40.41664, -3.70381],
+        ['Puerta del Sol', 40.41664, -3.70381],
         ['Catedral de Santiago', 42.88054, -8.54527],
         ['Palacio de la Magdalena', 43.46917, -3.76636],
         ['Museo Guggenheim Bilbao', 43.26876, -2.93388],
         ['Sagrada Familia', 41.40344, 2.17409],
         ['Ciudad de las Artes y las Ciencias', 39.45556, -0.35184],
         ['Catedral de Málaga', 36.72012, -4.41950],
-        ['Plaza Mayor de Salamanca', 40.93503, -5.66407],
+        ['Plaza Mayor de Salamanca', 40.96059, -5.66591],
         ['Teatro Romano de Mérida', 38.91534, -6.33864],
         ['La Giralda', 37.38620, -5.99254],
         ['Mezquita-Catedral de Córdoba', 37.87899, -4.77947]
     ];
 
     constructor(
-        private _snackbar: MatSnackBar
+        private _snackbar: MatSnackBar,
+        private _route: ActivatedRoute,
+        private _router: Router
     ) {
 
     }
 
     ngOnInit(): void {
         // Notification.requestPermission();
-        this._snackbar.open('No se comparte la información con ningún servidor', 'Cerrar', {
-            duration: 3000
-        });
+        const warningShown = sessionStorage.getItem('warningShown');
+        if (!warningShown) {
+            this._snackbar.open('No se comparte la información con ningún servidor', 'Cerrar', {
+                duration: 5000
+            });
+            sessionStorage.setItem('warningShown', 'true');
+        }
+
+        const params = sessionStorage.getItem('params');
+        if (params) {
+            this.textToPrint = '· Received params ·' + '\n' + params;
+            sessionStorage.removeItem('params');
+        }
     }
 
     getBrowserInfo(): void {
@@ -185,29 +198,23 @@ export class AppComponent implements OnInit {
 
     calculateDistance(latitude: number, longitude: number): number {
         const latitudeChosen = this.selectValue[1];
-        console.log('latitude: ' + latitude);
-        console.log('latitudeChosen: ' + latitudeChosen);
-
         const longitudeChosen = this.selectValue[2];
-        console.log('longitude: ' + longitude);
-        console.log('longitudeChosen: ' + longitudeChosen);
 
-        const earthRadius = 6371;
+        // Fórmula de https://www.movable-type.co.uk/scripts/latlong.html
 
-        const x1 = latitude - latitudeChosen;
-        const distanceLatitude = this.toRadians(x1);
+        const R = 6371e3;
+        const φ1 = latitude * Math.PI / 180; // φ, λ in radians
+        const φ2 = latitudeChosen * Math.PI / 180;
+        const Δφ = (latitudeChosen - latitude) * Math.PI / 180;
+        const Δλ = (longitudeChosen - longitude) * Math.PI / 180;
 
-        const x2 = longitude - longitudeChosen;
-        const distanceLongitude = this.toRadians(x2);
-
-        const a = Math.sin(distanceLatitude / 2) * Math.sin(distanceLatitude / 2) +
-            Math.cos(this.toRadians(latitude)) * Math.cos(this.toRadians(latitudeChosen)) *
-            Math.pow(Math.sin(this.toRadians(distanceLongitude)), 2);
-
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const d = earthRadius * c;
+        const d = R * c; // in metres
 
-        return d;
+        return d / 1000 // in kilometres;
     }
 
     toRadians(value: number): number {

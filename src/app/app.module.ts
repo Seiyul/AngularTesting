@@ -37,11 +37,13 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTreeModule } from '@angular/material/tree';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GetComponent } from './get/get.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        GetComponent
     ],
     imports: [
         BrowserModule,
