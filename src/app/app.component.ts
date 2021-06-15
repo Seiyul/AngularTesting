@@ -61,13 +61,13 @@ export class AppComponent implements OnInit {
                 this.showSelect = false;
                 this.textToPrint =
                     '· watchPosition · \n· Refresco Nº ' + (this.averageAccuracy.length + 1) + ' ·' + '\n\n' +
-                    'Ubicación seleccionada: ' + this.selectValue[0] + '\n' +
+                    'Ubicación seleccionada: \n' + this.selectValue[0] + '\n' +
                     'Latitud de la ubicación: ' + this.selectValue[1] + '\n' +
                     'Longitud de la ubicación: ' + this.selectValue[2] + '\n\n' +
                     'Latitud actual: ' + crd.latitude + '\n' +
                     'Longitud actual: ' + crd.longitude + '\n' +
                     'Precisión: ±' + crd.accuracy + ' m\n\n' +
-                    '(!) Distancia a la ubicación: ' + this.calculateDistance(crd.latitude, crd.longitude) + ' km(s)' + '\n\n' +
+                    '(!) Distancia a la ubicación: \n' + this.calculateDistance(crd.latitude, crd.longitude) + ' km(s)' + '\n\n' +
                     'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n\n' +
                     'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
                     'Fecha del clickeo: ' + date + '\n' +
