@@ -27,11 +27,7 @@ jobs:
         run: |
           npm install
           npm run-script deploy
-          echo "LS"
-          echo ls
-          echo "DIR"
-          echo dir
-          echo "CD"
+          ls
           cd build
           cp index.html 404.html
 
