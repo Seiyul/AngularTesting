@@ -38,7 +38,6 @@ jobs:
           
       - name: Create 404 Page
         run: |
-          git checkout gh-pages
           ls
           cd build
           cp index.html 404.html
