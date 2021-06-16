@@ -38,6 +38,7 @@ jobs:
           
       - name: Create 404 Page
         run: |
+          cd dist
           ls
           cd build
           cp index.html 404.html
