@@ -26,7 +26,8 @@ jobs:
       - name: Build
         run: |
           npm install
-          npm run-script deploy        
+          npm run-script deploy
+          cd build
           cp index.html 404.html
 
       - name: Deploy to GitHub Pages
