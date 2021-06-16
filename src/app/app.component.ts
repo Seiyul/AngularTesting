@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ComponentService } from './component.service';
 
 @Component({
     selector: 'app-root',
@@ -50,25 +51,23 @@ export class AppComponent implements OnInit {
     constructor(
         private _snackbar: MatSnackBar,
         private _route: ActivatedRoute,
-        private _router: Router
+        private _router: Router,
+        private _service: ComponentService
     ) {
 
     }
 
     ngOnInit(): void {
         // Notification.requestPermission();
+        this._service.setQueryParams.subscribe(() => {
+            this.getQueryParams();
+        });
         const warningShown = sessionStorage.getItem('warningShown');
         if (!warningShown) {
             this._snackbar.open('No se comparte la información con ningún servidor', 'Cerrar', {
                 duration: 5000
             });
             sessionStorage.setItem('warningShown', 'true');
-        }
-
-        const params = sessionStorage.getItem('params');
-        if (params) {
-            this.textToPrint = '· Received params ·' + '\n' + params;
-            sessionStorage.removeItem('params');
         }
     }
 
@@ -228,5 +227,14 @@ export class AppComponent implements OnInit {
         this.showForm = false;
         this.showSelect = true;
         this.getCoordinates(true);
+    }
+
+    getQueryParams(): void {
+        const params = sessionStorage.getItem('params');
+        if (params) {
+            this.textToPrint = '· Received params ·' + '\n' + params;
+            sessionStorage.removeItem('params');
+        }
+
     }
 }
