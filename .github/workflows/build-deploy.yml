@@ -27,6 +27,12 @@ jobs:
         run: |
           npm install
           npm run-script deploy
+          
+      - name: Create 404 Page
+        run: |
+          cd dist
+          cd Testing
+          cp index.html 404.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
@@ -36,11 +42,5 @@ jobs:
           # Mirar outputPath en angular.json
           FOLDER: dist/Testing
           
-      - name: Create 404 Page
-        run: |
-          cd dist
-          cd Testing
-          ls
-          cd build
-          cp index.html 404.html
+
 
