@@ -14,6 +14,7 @@ export class ComponentService {
     setParams(params: any): void {
         this.params = params;
         sessionStorage.setItem('params', JSON.stringify(params));
+        console.log('setParams');
         this.setQueryParams.emit();
     }
 

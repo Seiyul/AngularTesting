@@ -38,12 +38,16 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatTreeModule } from '@angular/material/tree';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GetComponent } from './get/get.component';
+import { SettingsComponent } from './settings/settings.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        GetComponent
+        GetComponent,
+        SettingsComponent,
+        HomeComponent
     ],
     imports: [
         BrowserModule,

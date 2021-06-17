@@ -20,7 +20,7 @@ export class GetComponent implements OnInit {
     ngOnInit(): void {
         this._route.queryParams.subscribe(params => {
             this._service.setParams(JSON.stringify(params));
-            this._router.navigate(['']);
+            this._router.navigateByUrl('/home');
         });
     }
 }
