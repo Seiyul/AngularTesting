@@ -1,0 +1,21 @@
+.goingGreen {
+    color: green;
+    -webkit-transition: color 0.5s ease-out;
+    -moz-transition: color 0.5s ease-out;
+    -o-transition: color 0.5s ease-out;
+    transition: color 0.5s ease-out;
+}
+
+.goingRed {
+    color: red;
+    -webkit-transition: color 0.5s ease-out;
+    -moz-transition: color 0.5s ease-out;
+    -o-transition: color 0.5s ease-out;
+    transition: color 0.5s ease-out;
+}
+
+.counter {
+    margin: 15px;
+    font-size: 40px;
+    font-weight: bolder;
+}

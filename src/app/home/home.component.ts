@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
 
     isCalculateDistance = false;
 
+    lastDistance: any;
+    actualDistance: any;
+
     showForm = false;
 
     customPlace = new FormGroup({
@@ -59,6 +62,8 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         // Notification.requestPermission();
+        this.actualDistance = 0;
+        this.lastDistance = 0;
         const params = sessionStorage.getItem('params');
         if (params) {
             this.textToPrint = '· Received params ·' + '\n' + params;
@@ -104,6 +109,7 @@ export class HomeComponent implements OnInit {
             let endTime = new Date();
             const accuracy = crd.accuracy;
             const time = (endTime.getTime() - startTime.getTime());
+            this.actualDistance = this.calculateDistance(crd.latitude, crd.longitude);
             if (this.isCalculateDistance) {
                 this.showSelect = false;
                 this.textToPrint =
@@ -114,7 +120,7 @@ export class HomeComponent implements OnInit {
                     'Latitud actual: ' + crd.latitude + '\n' +
                     'Longitud actual: ' + crd.longitude + '\n' +
                     'Precisión: ±' + crd.accuracy + ' m\n\n' +
-                    '(!) Distancia a la ubicación: \n' + this.calculateDistance(crd.latitude, crd.longitude) + ' km(s)' + '\n\n' +
+                    '(!) Distancia a la ubicación: \n' + this.actualDistance / 1000 + ' km(s)' + '\n\n' +
                     'Velocidad: ' + crd.speed * 3.6 + ' km/h' + '\n\n' +
                     'Marca temporal: ' + new Date(pos.timestamp).toISOString() + '\n' +
                     'Fecha del clickeo: ' + date + '\n' +
@@ -198,6 +204,7 @@ export class HomeComponent implements OnInit {
     }
 
     calculateDistance(latitude: number, longitude: number): number {
+        this.lastDistance = this.actualDistance;
         const latitudeChosen = this.selectValue[1];
         const longitudeChosen = this.selectValue[2];
 
@@ -215,7 +222,14 @@ export class HomeComponent implements OnInit {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         const d = R * c; // in metres
 
-        return d / 1000 // in kilometres;
+        const result = d;
+        this.actualDistance = result;
+
+        if (this.actualDistance) {
+            this.animateValue(document.getElementById("value"), this.lastDistance, this.actualDistance, 1000);
+        }
+
+        return result;
     }
 
     toRadians(value: number): number {
@@ -229,5 +243,22 @@ export class HomeComponent implements OnInit {
         this.showForm = false;
         this.showSelect = true;
         this.getCoordinates(true);
+    }
+
+    animateValue(obj: any, start: any, end: any, duration: any) {
+        console.log('start -->', start);
+        console.log('end -->', end);
+
+
+        let startTimestamp: any = null;
+        const step = (timestamp: any) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
     }
 }
