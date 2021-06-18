@@ -432,6 +432,10 @@
         </button>
     </form>
 
+    <div id="value" class="counter"
+        [ngClass]="{'goingRed': actualDistance > lastDistance, 'goingGreen': actualDistance <= lastDistance}"
+        [hidden]="actualDistance === 0"></div>
+
 
     <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677"
         viewBox="0 0 2611.084 485.677">
