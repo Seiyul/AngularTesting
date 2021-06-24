@@ -59,6 +59,12 @@
         </button>
     </div>
 
+    <div style="margin-top: 25px;" *ngIf="settings.get('vibration')?.value">
+        <button mat-raised-button color="primary" (click)="delayedVibrate();" [disabled]="showHint">
+            Probar vibración (15s delay)
+        </button>
+    </div>
+
 
     <div style="margin-top: 25px;" *ngIf="showHint">
         <pre>Patrón utilizado:</pre>
@@ -68,7 +74,7 @@
 
 
     <div style="margin-top: 25px;">
-        <mat-checkbox formControlName="notification">Notificaciones</mat-checkbox>
+        <mat-checkbox formControlName="notification" [disabled]="true">Notificaciones (deshabilitado)</mat-checkbox>
     </div>
 
     <div style="margin-top: 25px;" *ngIf="settings.get('notification')?.value">

@@ -64,6 +64,16 @@ export class SettingsComponent implements OnInit {
         }
     }
 
+    delayedVibrate(): void {
+        this._snackBar.open('El móvil vibrará dentro de 15 segundos. Puedes cambiar de aplicación.', 'Cerrar', {
+            duration: 7000
+        });
+
+        setTimeout(() => {
+            this.vibrate();
+        }, 15000);
+    }
+
     notify(): void {
         const date = new Date().toISOString();
         alert('Notificación de prueba de las ' + date);
