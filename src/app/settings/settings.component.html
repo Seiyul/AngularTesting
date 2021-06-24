@@ -32,14 +32,14 @@
         </mat-form-field>
     </div>
 
-    <div *ngIf="settings.get('timer')?.value" style="margin-top: 45px;">
+    <div *ngIf="settings.get('timer')?.value" style="margin-top: 50px;">
         <mat-radio-group formControlName="timerOption">
             <mat-radio-button value="1" style="margin-right: 119px;">Total</mat-radio-button>
             <mat-radio-button value="2">Parcial</mat-radio-button>
         </mat-radio-group>
     </div>
 
-    <div [ngStyle]="{'margin-top': settings.get('timer')?.value ? '10px' : '45px'}">
+    <div [ngStyle]="{'margin-top': settings.get('timer')?.value ? '10px' : '50px'}">
         <mat-form-field appearance="fill">
             <mat-label>Margen de error</mat-label>
             <input matInput style="text-align: right;" formControlName="margin"
