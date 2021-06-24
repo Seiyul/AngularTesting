@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // Notification.requestPermission();
         this.actualDistance = 0;
         this.lastDistance = 0;
         const params = sessionStorage.getItem('params');
@@ -246,10 +245,6 @@ export class HomeComponent implements OnInit {
     }
 
     animateValue(obj: any, start: any, end: any, duration: any) {
-        console.log('start -->', start);
-        console.log('end -->', end);
-
-
         let startTimestamp: any = null;
         const step = (timestamp: any) => {
             if (!startTimestamp) startTimestamp = timestamp;
@@ -260,5 +255,9 @@ export class HomeComponent implements OnInit {
             }
         };
         window.requestAnimationFrame(step);
+    }
+
+    goToSettings(): void {
+        this._router.navigate(['/settings']);
     }
 }

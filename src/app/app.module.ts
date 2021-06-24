@@ -40,6 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GetComponent } from './get/get.component';
 import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
+import { ConnectComponent } from './connect/connect.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { HomeComponent } from './home/home.component';
         AppComponent,
         GetComponent,
         SettingsComponent,
-        HomeComponent
+        HomeComponent,
+        ConnectComponent
     ],
     imports: [
         BrowserModule,
