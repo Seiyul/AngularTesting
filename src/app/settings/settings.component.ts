@@ -42,9 +42,6 @@ export class SettingsComponent implements OnInit {
         });
 
         this.settings.get('notification')?.valueChanges.subscribe(() => {
-            if (this.settings.get('notification')?.value === true) {
-                Notification.requestPermission();
-            }
         });
     }
 
@@ -68,20 +65,18 @@ export class SettingsComponent implements OnInit {
     }
 
     notify(): void {
-        if (Notification.permission !== 'denied') {
-            const date = new Date().toISOString();
-            this.notification = new Notification('Notificación de prueba de las ' + date);
-        }
+        const date = new Date().toISOString();
+        alert('Notificación de prueba de las ' + date);
     }
 
     delayedNotify(): void {
-        this._snackBar.open('Se te enviará una notificación dentro de 30 segundos. Puedes cambiar de aplicación.', 'Cerrar', {
-            duration: 10000
+        this._snackBar.open('Se te enviará una notificación dentro de 15 segundos. Puedes cambiar de aplicación.', 'Cerrar', {
+            duration: 7000
         });
 
         setTimeout(() => {
             this.notify();
-        }, 30000);
+        }, 15000);
     }
 
     back(): void {

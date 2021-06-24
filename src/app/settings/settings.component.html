@@ -81,7 +81,7 @@
 
     <div style="margin-top: 25px;" *ngIf="settings.get('notification')?.value">
         <button mat-raised-button color="primary" (click)="delayedNotify();">
-            Probar notifiación (30s delay)
+            Probar notifiación (15s delay)
         </button>
     </div>
 
@@ -94,17 +94,6 @@
     <div class="terminal" style="width: 100%;" *ngIf="saveClicked === true;">
         <pre>Settings:</pre>
         <pre>{{ settings.value | json }}</pre>
-        <ng-container *ngIf="notification">
-            <pre>Notification:</pre>
-            <pre>"title": {{ notification.title }}</pre>
-            <pre>"timestamp": {{ notification.timestamp }}</pre>
-            <pre>"silent": {{ notification.silent }}</pre>
-            <pre>"requireInteraction": {{ notification.requireInteraction }}</pre>
-            <pre>"renotify": {{ notification.renotify }}</pre>
-            <pre>"vibrate": {{ notification.vibrate.toString() }}</pre>
-            <pre>"actions": {{ notification.actions.toString() }}</pre>
-        </ng-container>
-
     </div>
 
     <div style="margin-top: 25px;">
