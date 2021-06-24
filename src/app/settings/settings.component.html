@@ -61,7 +61,8 @@
 
 
     <div style="margin-top: 25px;" *ngIf="showHint">
-        <pre>Patrón utilizado: [150, 50, 200, 200, 300]</pre>
+        <pre>Patrón utilizado:</pre>
+        <pre style="font-size: smaller; font-style: italic;">[100, 200, 300, 400, 500, 600, 700]</pre>
         <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
     </div>
 
@@ -76,14 +77,34 @@
         </button>
     </div>
 
+
+
+    <div style="margin-top: 25px;" *ngIf="settings.get('notification')?.value">
+        <button mat-raised-button color="primary" (click)="delayedNotify();">
+            Probar notifiación (30s delay)
+        </button>
+    </div>
+
     <div style="margin-top: 25px;">
-        <button mat-raised-button color="primary" (click)="saveClicked = !saveClicked">
+        <button mat-raised-button color="accent" (click)="saveClicked = !saveClicked">
             {{ !saveClicked ? 'Mostrar info guardada' : 'Ocultar info' }}
         </button>
     </div>
 
     <div class="terminal" style="width: 100%;" *ngIf="saveClicked === true;">
+        <pre>Settings:</pre>
         <pre>{{ settings.value | json }}</pre>
+        <ng-container *ngIf="notification">
+            <pre>Notification:</pre>
+            <pre>"title": {{ notification.title }}</pre>
+            <pre>"timestamp": {{ notification.timestamp }}</pre>
+            <pre>"silent": {{ notification.silent }}</pre>
+            <pre>"requireInteraction": {{ notification.requireInteraction }}</pre>
+            <pre>"renotify": {{ notification.renotify }}</pre>
+            <pre>"vibrate": {{ notification.vibrate.toString() }}</pre>
+            <pre>"actions": {{ notification.actions.toString() }}</pre>
+        </ng-container>
+
     </div>
 
     <div style="margin-top: 25px;">

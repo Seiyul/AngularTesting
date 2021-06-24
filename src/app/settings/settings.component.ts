@@ -17,6 +17,8 @@ export class SettingsComponent implements OnInit {
     showHint = false;
     percentage = 0;
 
+    notification: any;
+
     constructor(
         public masks: MasksService,
         private _snackBar: MatSnackBar,
@@ -47,8 +49,11 @@ export class SettingsComponent implements OnInit {
     }
 
     vibrate(): void {
-        window.navigator.vibrate([150, 50, 200, 200, 300]);
+        window.navigator.vibrate([100, 200, 300, 400, 500, 600, 700]);
         this.showHint = true;
+        this._snackBar.open('Comprueba que no tengas el móvil sin vibración', 'Cerrar', {
+            duration: 5000
+        });
         for (let i = 0; i <= 100; i++) {
             setTimeout(() => {
                 if (i === 100) {
@@ -64,8 +69,19 @@ export class SettingsComponent implements OnInit {
 
     notify(): void {
         if (Notification.permission !== 'denied') {
-            var notification = new Notification('Notificación de prueba');
+            const date = new Date().toISOString();
+            this.notification = new Notification('Notificación de prueba de las ' + date);
         }
+    }
+
+    delayedNotify(): void {
+        this._snackBar.open('Se te enviará una notificación dentro de 30 segundos. Puedes cambiar de aplicación.', 'Cerrar', {
+            duration: 10000
+        });
+
+        setTimeout(() => {
+            this.notify();
+        }, 30000);
     }
 
     back(): void {
