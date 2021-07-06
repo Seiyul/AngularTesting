@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1625565150426,
+  "timestamp": 1625612272822,
   "index": "/AngularTesting/index.html",
   "assetGroups": [
     {
@@ -43,18 +43,18 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/AngularTesting/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
-    "/AngularTesting/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
-    "/AngularTesting/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
-    "/AngularTesting/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
-    "/AngularTesting/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
-    "/AngularTesting/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
-    "/AngularTesting/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
-    "/AngularTesting/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/AngularTesting/assets/icons/icon-128x128.png": "42bddb30845155666c23d84259e829ab249e40e3",
+    "/AngularTesting/assets/icons/icon-144x144.png": "e6f3521c79630b0859dfd02d787c25b73c7d44b7",
+    "/AngularTesting/assets/icons/icon-152x152.png": "47ea87ad69e81051de67ed9069106c956cf28ab3",
+    "/AngularTesting/assets/icons/icon-192x192.png": "a2248e903a7b806745323f7403dc5001e89fd322",
+    "/AngularTesting/assets/icons/icon-384x384.png": "ceafbb1c97d66e8cbedca4b4bc859f4fc5cbea97",
+    "/AngularTesting/assets/icons/icon-512x512.png": "b69ac6f6369fe9a699f326ee65b0394d1d493b27",
+    "/AngularTesting/assets/icons/icon-72x72.png": "bf315c77069aa86c48cb954a2c7ef15c746f59b9",
+    "/AngularTesting/assets/icons/icon-96x96.png": "65a9e7580b0da20b1570a4dac96d33a76a2ad77b",
     "/AngularTesting/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
     "/AngularTesting/index.html": "c53870011c2e005d57b92bd45df21e684f71d460",
     "/AngularTesting/main.0d4b2fc1cf0344455e23.js": "a669881d6d997466483d12014a63e5d6f4888c6c",
-    "/AngularTesting/manifest.webmanifest": "9530073e61cbed286b4697472d06b1c62d75ed60",
+    "/AngularTesting/manifest.webmanifest": "7ed2a05a9dd4bc0e244eb2aa67c653879f87f257",
     "/AngularTesting/polyfills.00096ed7d93ed26ee6df.js": "cfe7b0b53e96bff9ba384b4d497c08475a617d62",
     "/AngularTesting/runtime.7b63b9fd40098a2e8207.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
     "/AngularTesting/styles.b52ccf375ec42dc41e6d.css": "32029ffc4ab1d03c79236a124f72fe4ece037bd2"
