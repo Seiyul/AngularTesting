@@ -63,11 +63,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            this.deferredPrompt = e;
-        });
-
         this.actualDistance = 0;
         this.lastDistance = 0;
         const params = sessionStorage.getItem('params');
@@ -269,18 +264,6 @@ export class HomeComponent implements OnInit {
     }
 
     goToPwa(): void {
-        console.log('this.deferredPrompt -->', this.deferredPrompt);
-        if (this.deferredPrompt !== undefined) {
-            this.deferredPrompt.prompt();
-            // Wait for the user to respond to the prompt
-            this.deferredPrompt.userChoice.then((choiceResult: any) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt');
-                } else {
-                    console.log('User dismissed the A2HS prompt');
-                }
-                this.deferredPrompt = null;
-            });
-        }
+        this.textToPrint = 'Testing';
     }
 }
