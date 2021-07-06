@@ -41,6 +41,8 @@ import { GetComponent } from './get/get.component';
 import { SettingsComponent } from './settings/settings.component';
 import { HomeComponent } from './home/home.component';
 import { ConnectComponent } from './connect/connect.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -91,7 +93,13 @@ import { ConnectComponent } from './connect/connect.component';
         MatRippleModule,
         MatTreeModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+          // Register the ServiceWorker as soon as the app is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        })
     ],
     providers: [],
     bootstrap: [AppComponent]

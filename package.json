@@ -8,7 +8,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "deploy": "ng build --prod --output-path dist/Testing --base-href=/AngularTesting/"
+        "predeploy": "ng build --prod --output-path dist/Testing --base-href=/AngularTesting/",
+        "deploy": "npx gh-pages -d dist/Testing"
     },
     "private": true,
     "dependencies": {
@@ -22,6 +23,8 @@
         "@angular/platform-browser": "~11.2.11",
         "@angular/platform-browser-dynamic": "~11.2.11",
         "@angular/router": "~11.2.11",
+        "@angular/service-worker": "~11.2.11",
+        "gh-pages": "^3.2.3",
         "rxjs": "~6.6.0",
         "tslib": "^2.0.0",
         "zone.js": "~0.11.3"
