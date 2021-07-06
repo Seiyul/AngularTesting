@@ -29,11 +29,13 @@ export class HomeComponent implements OnInit {
 
     showForm = false;
 
+    deferredPrompt: any;
+
     customPlace = new FormGroup({
         name: new FormControl(''),
         latitude: new FormControl('', [Validators.max(90), Validators.min(-90), Validators.required]),
         longitude: new FormControl('', [Validators.max(180), Validators.min(-180), Validators.required])
-    })
+    });
 
     sampleCoordinates = [
         ['Acueducto de Segovia', 40.94791, -4.11788],
@@ -61,6 +63,11 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+        });
+
         this.actualDistance = 0;
         this.lastDistance = 0;
         const params = sessionStorage.getItem('params');
@@ -259,5 +266,21 @@ export class HomeComponent implements OnInit {
 
     goToSettings(): void {
         this._router.navigate(['/settings']);
+    }
+
+    goToPwa(): void {
+        console.log('this.deferredPrompt -->', this.deferredPrompt);
+        if (this.deferredPrompt !== undefined) {
+            this.deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            this.deferredPrompt.userChoice.then((choiceResult: any) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                } else {
+                    console.log('User dismissed the A2HS prompt');
+                }
+                this.deferredPrompt = null;
+            });
+        }
     }
 }
