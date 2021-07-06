@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1625612272822,
+  "timestamp": 1625613517098,
   "index": "/AngularTesting/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/AngularTesting/favicon.ico",
         "/AngularTesting/index.html",
-        "/AngularTesting/main.0d4b2fc1cf0344455e23.js",
+        "/AngularTesting/main.d48d4d052d183ed5b9fb.js",
         "/AngularTesting/manifest.webmanifest",
         "/AngularTesting/polyfills.00096ed7d93ed26ee6df.js",
         "/AngularTesting/runtime.7b63b9fd40098a2e8207.js",
@@ -52,8 +52,8 @@
     "/AngularTesting/assets/icons/icon-72x72.png": "bf315c77069aa86c48cb954a2c7ef15c746f59b9",
     "/AngularTesting/assets/icons/icon-96x96.png": "65a9e7580b0da20b1570a4dac96d33a76a2ad77b",
     "/AngularTesting/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/AngularTesting/index.html": "c53870011c2e005d57b92bd45df21e684f71d460",
-    "/AngularTesting/main.0d4b2fc1cf0344455e23.js": "a669881d6d997466483d12014a63e5d6f4888c6c",
+    "/AngularTesting/index.html": "bf824faf9ef1da0880b3934d0201fe97f6dac891",
+    "/AngularTesting/main.d48d4d052d183ed5b9fb.js": "9cf36b72c0e378549ac94fa488141b117a42e656",
     "/AngularTesting/manifest.webmanifest": "7ed2a05a9dd4bc0e244eb2aa67c653879f87f257",
     "/AngularTesting/polyfills.00096ed7d93ed26ee6df.js": "cfe7b0b53e96bff9ba384b4d497c08475a617d62",
     "/AngularTesting/runtime.7b63b9fd40098a2e8207.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
