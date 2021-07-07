@@ -8,7 +8,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "deploy": "ng build --prod --output-path dist/Testing --base-href=/AngularTesting/"
+        "deploy": "ng build --prod --output-path dist/Testing --base-href=/AngularTesting/",
+        "pwa": "ng build --prod && http-server -p 8080 -c-1 dist/Testing"
     },
     "private": true,
     "dependencies": {
